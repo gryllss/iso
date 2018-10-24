@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VideoUrlViewController : UIViewController
 @property (nonatomic, strong) NSString *webviewUrl;
+@property (nonatomic, strong)NSArray *jiexiUrl;
 
 @end
 

@@ -9,6 +9,9 @@
 #import "VideoFragmentViewController.h"
 #import "SDCycleScrollView.h"
 #import "VideoUrlViewController.h"
+#import <BmobSDK/BmobUser.h>
+#import <BmobSDK/BmobQuery.h>
+#import "MBProgressHUD+XMG.h"
 
 @interface VideoFragmentViewController ()<SDCycleScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UIView *equalSafeView;
@@ -25,6 +28,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *btndongman;
 @property (strong, nonatomic) IBOutlet UIButton *btntv;
 @property (strong, nonatomic) NSString *webUrl;
+@property (strong ,nullable) NSArray *jiexiUrlList;
 
 
 
@@ -114,42 +118,88 @@
 }
 
 - (void)btnClicked:(UIButton *)btn {
-    if (btn.tag == 1) {
-//        [self clearFile];
-//        NSLog(@"%ld", [self getSize]);
-        _webUrl = @"http://m.iqiyi.com/";
-    }else if (btn.tag == 2){
-        _webUrl = @"http://m.v.qq.com";
-    }else if (btn.tag == 3){
-        _webUrl = @"https://m.tv.sohu.com/";
-    }else if (btn.tag == 4){
-        _webUrl = @"https://www.youku.com/";
-    }else if (btn.tag == 5){
-        _webUrl = @"https://m.mgtv.com/";
-    }else if (btn.tag == 6){
-        _webUrl = @"http://compaign.tudou.com/";
-    }else if (btn.tag == 7){
-        _webUrl = @"http://m.1905.com/";
-    }else if (btn.tag == 8){
-        _webUrl = @"http://m.le.com/";
-    }else if (btn.tag == 9){
-        _webUrl = @"http://m.pptv.com/?f=pptv";
-    }else if (btn.tag == 10){
-        _webUrl = @"http://www.pearvideo.com/?from=intro";
-    }else if (btn.tag == 11){
-        _webUrl = @"http://m.iqiyi.com/dongman/";
-    }else if (btn.tag == 12){
-        _webUrl = @"http://wx.iptv789.com/?act=home";
-    }
-        
     
-    [self performSegueWithIdentifier:@"openVideoUrl" sender:nil];
+    BmobUser *bUser = [BmobUser currentUser];
+    if (bUser) {
+        NSString *localTimeMil = [bUser objectForKey:@"currentTimeMillisVer"];
+        NSString *localoutTime = [bUser objectForKey:@"outTime"];
+        BmobQuery   *bquery = [BmobQuery queryWithClassName:@"_User"];
+        [bquery getObjectInBackgroundWithId:[bUser objectId] block:^(BmobObject *object,NSError *error){
+            if (error){
+                [MBProgressHUD showError:@"unknown error"];
+            }else{
+                NSString *bmobTimeMil = [object objectForKey:@"currentTimeMillisVer"];
+                
+                Boolean isVer = [localTimeMil isEqualToString:bmobTimeMil] &&  [self compareOneDay:[self stringToDate:localoutTime withDateFormat:@"yyyy-MM-dd HH:mm:ss"]  withAnotherDay:[NSDate date]] ? true : false;
+                if (isVer) {
+                    
+                    if (btn.tag == 1) {
+                        _webUrl = @"http://m.iqiyi.com/";
+                    }else if (btn.tag == 2){
+                        _webUrl = @"http://m.v.qq.com";
+                    }else if (btn.tag == 3){
+                        _webUrl = @"https://m.tv.sohu.com/";
+                    }else if (btn.tag == 4){
+                        _webUrl = @"https://www.youku.com/";
+                    }else if (btn.tag == 5){
+                        _webUrl = @"https://m.mgtv.com/";
+                    }else if (btn.tag == 6){
+                        _webUrl = @"http://compaign.tudou.com/";
+                    }else if (btn.tag == 7){
+                        _webUrl = @"http://m.1905.com/";
+                    }else if (btn.tag == 8){
+                        _webUrl = @"http://m.le.com/";
+                    }else if (btn.tag == 9){
+                        _webUrl = @"http://m.pptv.com/?f=pptv";
+                    }else if (btn.tag == 10){
+                        _webUrl = @"http://www.pearvideo.com/?from=intro";
+                    }else if (btn.tag == 11){
+                        _webUrl = @"http://m.iqiyi.com/dongman/";
+                    }else if (btn.tag == 12){
+                        _webUrl = @"http://wx.iptv789.com/?act=home";
+                    }
+                    
+                    BmobQuery   *bquery = [BmobQuery queryWithClassName:@"UserReadOrACL"];
+                    //查找GameScore表里面id为0c6db13c的数据
+                    [bquery getObjectInBackgroundWithId:@"0c5cb1e7a1" block:^(BmobObject *object,NSError *error){
+                        if (error){
+                             [self performSegueWithIdentifier:@"openVideoUrl" sender:nil];
+                        }else{
+                            if (object) {
+                                //得到playerName和cheatMode
+                                NSString *userReadOrACL = [object objectForKey:@"userReadOrACL"];
+                                _jiexiUrlList = [userReadOrACL componentsSeparatedByString:@"****\n"];
+//                                NSLog(@"%@",_jiexiUrlList);
+                                [self performSegueWithIdentifier:@"openVideoUrl" sender:nil];
+                            }else{
+                                 [self performSegueWithIdentifier:@"openVideoUrl" sender:nil];
+                            }
+                        }
+                    }];
+
+                }else {
+                 [MBProgressHUD showError:@"账号已在别处登录或身份过期，请重新登录"];
+                }
+                
+            }
+        }];
+        
+        
+    }else {
+        [MBProgressHUD showError:@"账号未登录"];
+    }
+    
+    
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     VideoUrlViewController *vc = segue.destinationViewController;
     vc.webviewUrl = _webUrl;
+    vc.jiexiUrl = _jiexiUrlList;
 }
+
+
 
 
 - (void)clearFile
@@ -177,6 +227,52 @@
     return size;
 }
 
+
+
+//字符串转日期格式
+- (NSDate *)stringToDate:(NSString *)dateString withDateFormat:(NSString *)format
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:format];
+    
+    NSDate *date = [dateFormatter dateFromString:dateString];
+    return [self worldTimeToChinaTime:date];
+}
+
+
+//将世界时间转化为中国区时间
+- (NSDate *)worldTimeToChinaTime:(NSDate *)date
+{
+    NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [timeZone secondsFromGMTForDate:date];
+    NSDate *localeDate = [date  dateByAddingTimeInterval:interval];
+    return localeDate;
+}
+
+
+-(Boolean)compareOneDay:(NSDate *)oneDay withAnotherDay:(NSDate *)anotherDay
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *oneDayStr = [dateFormatter stringFromDate:oneDay];
+    NSString *anotherDayStr = [dateFormatter stringFromDate:anotherDay];
+    NSDate *dateA = [dateFormatter dateFromString:oneDayStr];
+    NSDate *dateB = [dateFormatter dateFromString:anotherDayStr];
+    NSComparisonResult result = [dateA compare:dateB];
+//    NSLog(@"date1 : %@, date2 : %@", oneDay, anotherDay);
+    if (result == NSOrderedDescending) {
+        //NSLog(@"Date1  is in the future");
+        return true;
+    }
+    else if (result == NSOrderedAscending){
+        //NSLog(@"Date1 is in the past");
+        return false;
+    }
+    //NSLog(@"Both dates are the same");
+    return false;
+    
+ 
+}
 
 
 

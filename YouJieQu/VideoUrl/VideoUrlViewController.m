@@ -242,10 +242,9 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     PlayVideoViewController *pc = segue.destinationViewController;
     _videoUrl = [[_webView URL]absoluteString];
-   
-    
     pc.webTitle = _videoTitle;
     pc.videoUrl =_videoUrl;
+    pc.jiexiUrl = _jiexiUrl;
 }
 
 

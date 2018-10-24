@@ -37,7 +37,14 @@
               @"https://www.1717yun.com/jx/ty.php?url=",
               @"http://jx.918jx.com/928/?url="];
     
+    if (_jiexiUrl != nil && ![_jiexiUrl isKindOfClass:[NSNull class]] && _jiexiUrl.count != 0){
+        [self webviewWithUrl:[_jiexiUrl[0]stringByAppendingString:_videoUrl]];
+    }
+    else{
        [self webviewWithUrl:[_lines[0]stringByAppendingString:_videoUrl]];
+    
+    }
+
     [self.videoTitle setText:_webTitle];
     [self.changeLine addTarget:self action:@selector(pushMenu) forControlEvents:UIControlEventTouchUpInside];
     
@@ -137,10 +144,16 @@
 
 #pragma mark YBPopupMenuDelegate
 -(void)ybPopupMenu:(YBPopupMenu *)ybPopupMenu didSelectedAtIndex:(NSInteger)index{
-   
-    [_webView loadRequest:[NSURLRequest requestWithURL:
-                           [NSURL URLWithString:[_lines[index] stringByAppendingString:_videoUrl]]]];
     
-    NSLog(@"%@", [_lines[index] stringByAppendingString:_videoUrl]);
+    if (_jiexiUrl != nil && ![_jiexiUrl isKindOfClass:[NSNull class]] && _jiexiUrl.count != 0){
+        [_webView loadRequest:[NSURLRequest requestWithURL:
+                               [NSURL URLWithString:[_jiexiUrl[index] stringByAppendingString:_videoUrl]]]];
+    }
+    else{
+        [_webView loadRequest:[NSURLRequest requestWithURL:
+                               [NSURL URLWithString:[_lines[index] stringByAppendingString:_videoUrl]]]];
+    }
+//    NSLog(@"lines %@", [_lines[index] stringByAppendingString:_videoUrl]);
+//    NSLog(@"jiexi123+%@", [_jiexiUrl[index] stringByAppendingString:_videoUrl]);
 }
 @end

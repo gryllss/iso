@@ -134,6 +134,7 @@
             [BmobUser logout];
             _loginOrRegiBtn.enabled = YES;
             _btnImage.enabled = YES;
+            _isLogin = NO;
 
         }];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -169,7 +170,7 @@
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString * cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    NSLog(@"%@",cachePath);
+//    NSLog(@"%@",cachePath);
     NSDirectoryEnumerator *fileEnumerator = [fileManager enumeratorAtPath:cachePath];
     for (NSString *fileName in fileEnumerator) {
         NSString *filePath = [cachePath stringByAppendingPathComponent:fileName];
@@ -186,7 +187,7 @@
 //        [[self navigationController ]navigationBar].hidden = YES; //隐藏顶部导航拦
     
     [super viewWillAppear:animated];
-     NSLog(@"%s", __func__);
+//     NSLog(@"%s", __func__);
     
     //设置代理即可
     self.navigationController.delegate = self;

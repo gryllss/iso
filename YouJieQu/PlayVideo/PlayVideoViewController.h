@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) IBOutlet UILabel *videoTitle;
 @property (strong, nonatomic) NSString *videoUrl;
 @property (strong, nonatomic) NSString *webTitle;
+@property (nonatomic, strong)NSArray *jiexiUrl;
 @end
 
 NS_ASSUME_NONNULL_END
