@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>icon</key>
+		<string>mine_timeexchange</string>
+		<key>name</key>
+		<string>时长兑换</string>
+	</dict>
+	<dict>
+		<key>icon</key>
+		<string>mine_contact</string>
+		<key>name</key>
+		<string>联系我们</string>
+	</dict>
+	<dict>
+		<key>icon</key>
+		<string>mine_question</string>
+		<key>name</key>
+		<string>常见问题</string>
+	</dict>
+	<dict>
+		<key>icon</key>
+		<string>mine_clear</string>
+		<key>name</key>
+		<string>清除缓存</string>
+	</dict>
+	<dict>
+		<key>icon</key>
+		<string>mine_exit</string>
+		<key>name</key>
+		<string>退出登陆</string>
+	</dict>
+</array>
+</plist>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>text</key>
+		<string>如以下回答仍未解决您的难题，欢迎使用以下联系方式：VX:xh191128，或者QQ：2537977869。</string>
+	</dict>
+	<dict>
+		<key>icon</key>
+		<string>feedback</string>
+		<key>title</key>
+		<string>如何播放想看的视频？</string>
+		<key>text</key>
+		<string>进入到您想看的视频播放页面，点击下方灰色按钮，即可搜索当前视频是否在网络上存在资源。</string>
+	</dict>
+	<dict>
+		<key>icon</key>
+		<string>feedback</string>
+		<key>title</key>
+		<string>为什么有时视频资源播放失败？</string>
+		<key>text</key>
+		<string>可能是当前线路无法搜索到相应的资源，或者是加载过程中出现了网络问题。可尝试刷新当前页面，或更换其他线路搜索资源。资源均来自互联网，仅供学习交流，如有需要，请支持正版视频会员以便观看。</string>
+	</dict>
+	<dict>
+		<key>icon</key>
+		<string>feedback</string>
+		<key>title</key>
+		<string>账号在同一时间登陆不同设备吗？</string>
+		<key>text</key>
+		<string>不可以。同一时间内一个账号只能登陆一台设备。</string>
+	</dict>
+	<dict>
+		<key>icon</key>
+		<string>feedback</string>
+		<key>title</key>
+		<string>商城主页加载失败？</string>
+		<key>text</key>
+		<string>可能是服务器波动较大，稍候再进行尝试。如果有需求的话，麻烦您联系客服及时修复。</string>
+	</dict>
+	<dict>
+		<key>icon</key>
+		<string>feedback</string>
+		<key>title</key>
+		<string>App使用过程中存在Bug？</string>
+		<key>text</key>
+		<string>请联系微信或者QQ，会尽量对软件进行维护。</string>
+	</dict>
+</array>
+</plist>
